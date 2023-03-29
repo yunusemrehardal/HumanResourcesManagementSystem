@@ -1,0 +1,22 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Üyeliği Onaylayın";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+@{
+    if (@Model.DisplayConfirmAccountLink)
+    {
+<p class="text-center">
+     <a id="confirm-link" href="@Model.EmailConfirmationUrl">Üyeliğinizi Onaylamak İçin Tıklayınız</a>
+</p>
+    }
+    else
+    {
+<p>
+        Please check your email to confirm your account.
+</p>
+    }
+}
+

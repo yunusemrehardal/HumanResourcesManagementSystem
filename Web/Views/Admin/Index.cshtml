@@ -1,0 +1,105 @@
+﻿
+<div class="row">
+    <div class="col-xl-3 col-sm-6 col-12 mt-4">
+        <div class="card board1 fill1 ">
+            <div class="card-body">
+                <div class="card_widget_header">
+                    <label>Aktif Çalışanlar</label>
+                    <h4>@ViewBag.TotalEmployees</h4>
+                </div>
+                <div class="card_widget_img">
+                    <img src="~/assets/img/dash1.png" alt="card-img" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 mt-4">
+        <div class="card board1 fill2 ">
+            <div class="card-body">
+                <div class="card_widget_header">
+                    <label>Şirketler</label>
+                    <h4>@ViewBag.TotalCompanies</h4>
+                </div>
+                <div class="card_widget_img">
+                    <img src="~/assets/img/dash2.png" alt="card-img" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 mt-4">
+        <div class="card board1 fill3 ">
+            <div class="card-body">
+                <div class="card_widget_header">
+                    <label>Ayrılan Çalışanlar</label>
+                    <h4>@ViewBag.TotalPassiveEmployees</h4>
+                </div>
+                <div class="card_widget_img">
+                    <img src="~/assets/img/dash3.png" alt="card-img" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 mt-4">
+        <div class="card board1 fill4 ">
+            <div class="card-body">
+                <div class="card_widget_header">
+                    <label>Toplam Maaşlar</label>
+                    <h4>@ViewBag.SumSalaryEmployees</h4>
+                </div>
+                <div class="card_widget_img">
+                    <img src="~/assets/img/dash4.png" alt="card-img" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@model AdminSummaryViewModel
+<div class="card-body">
+    <form enctype="multipart/form-data">
+        <div class="mb-3 d-flex justify-content-start">
+            <input type="hidden" asp-for="Id" />
+            @if (Model.Gender == true && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="Alternate Text" />
+            }
+            @if (Model.Gender == false && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="Alternate Text" />
+            }
+            @if ((Model.Gender == true || Model.Gender == false) && Model.PhotoUrl != null)
+            {
+
+                <img style="width: 150px; height: 150px; " src="~/img/@Model.PhotoUrl" alt="Alternate Text" />
+            }
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 m-auto d-flex justify-content-center">
+                    <label asp-for="FirstName" style="font-weight:bold" class="form-label mr-2"> @Model.FirstName</label>
+                    <label asp-for="Surname" style="font-weight:bold" class="form-label"> @Model.Surname</label>
+                </div>
+                <hr />
+                <div class="mb-1 m-auto">
+                    <label asp-for="Address" style="font-weight:bold" class="form-label">Adres :</label>
+                    <label asp-for="Address" class="form-label"> @Model.Address</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="GenderText" style="font-weight:bold" class="form-label">Cinsiyet :</label>
+                    <label asp-for="GenderText" class="form-label"> @Model.GenderText</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="MailAdress" style="font-weight:bold" class="form-label">Mail Adresi :</label>
+                    <label asp-for="MailAdress" class="form-label"> @Model.MailAdress</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="PhoneNumber" style="font-weight:bold" class="form-label">Telefon Numarası :</label>
+                    <label asp-for="PhoneNumber" class="form-label"> @Model.PhoneNumber</label>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark mx-2" style="font-weight:bold" asp-action="AdminUpdate" asp-controller="Admin">GÜNCELLE</a>
+            <a class="btn btn-outline-dark" style="font-weight:bold" asp-action="AdminDetails" asp-controller="Admin">DETAY GÖSTER</a>
+        </div>
+    </form>
+</div>

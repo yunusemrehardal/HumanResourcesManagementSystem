@@ -1,0 +1,81 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Giriş";
+}
+
+<section class="bg-white">
+    <div class="container-fluid bg-white">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 ">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- UserName input -->
+                    <div class="form-outline mb-4">
+                        <label asp-for="Input.UserName" class="form-label">Kullanıcı Adı:</label>
+                        <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true"
+                               placeholder="Kullanıcı Adı giriniz" />
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label asp-for="Input.Password" class="form-label">Şifre:</label>
+                        <div class="input-group ">
+                            <input asp-for="Input.Password" class="form-control" id="password" autocomplete="current-password" aria-required="true"
+                                   placeholder="Şifrenizi Giriniz" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <button class="rounded-3 bg-transparent" type="button" id="show-password"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                </span>
+
+                            </div>
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                            <label asp-for="Input.RememberMe" class="form-label">
+                                <input class="form-check-input" asp-for="Input.RememberMe" />Beni Hatırla!
+                            </label>
+                        </div>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Şifremi unuttum</a>
+                    </div>
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">GİRİŞ YAP</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const showPasswordButton = document.getElementById("show-password");
+
+        showPasswordButton.addEventListener("mousedown", () => {
+            passwordInput.type = "text";
+        });
+
+        showPasswordButton.addEventListener("mouseup", () => {
+            passwordInput.type = "password";
+        });
+
+        showPasswordButton.addEventListener("mouseleave", () => {
+            passwordInput.type = "password";
+        });
+    </script>
+
+}

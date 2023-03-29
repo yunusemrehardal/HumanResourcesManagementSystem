@@ -1,0 +1,161 @@
+﻿@model ManagerViewModel
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="FirstName" class="form-label">Ad :</label>
+                <input style="width:250px" asp-for="FirstName" type="text" class="form-control" placeholder="Ad">
+                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="SecondName" class="form-label">İkinci Ad :</label>
+                    <input style="width:250px" asp-for="SecondName" type="text" class="form-control" placeholder="İkinci Ad">
+                    <span asp-validation-for="@Model.SecondName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Surname" class="form-label">Soyad :</label>
+                <input style="width:250px" asp-for="Surname" type="text" class="form-control" placeholder="Soyad">
+                <span asp-validation-for="@Model.Surname" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="SecondSurname" class="form-label">İkinci Soyad :</label>
+                    <input style="width:250px" asp-for="SecondSurname" type="text" class="form-control" placeholder="İkinci Soyad">
+                    <span asp-validation-for="@Model.SecondSurname" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="PhoneNumber" class="form-label">Telefon Numarası :</label>
+                <input style="width:250px" asp-for="PhoneNumber" type="number" class="form-control" placeholder="05XXXXXXXXX" data-val="true" data-val-turkeyphone="Geçerli bir Türk telefon numarası girin.">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="TC" class="form-label">TC No :</label>
+                    <input style="width:250px" asp-for="TC" type="number" class="form-control" placeholder="TC No">
+                    <span asp-validation-for="@Model.TC" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Address" class="form-label">Adres :</label>
+                <input style="width: 250px" size="33" asp-for="Address" type="text" class="form-control" placeholder="Ev Adresi">
+                <span asp-validation-for="@Model.Address" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight: bold; margin-left: 50px" asp-for="Photo" class="form-label">Fotoğraf :</label>
+                    <input style="width: 250px; margin-left: 50px" asp-for="Photo" type="file" class="form-control" placeholder="Fotoğraf">
+                    <span asp-validation-for="@Model.Photo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="BirthPlace" class="form-label">Doğum Yeri :</label>
+                <input style="width:250px" asp-for="BirthPlace" type="text" class="form-control" placeholder="Doğum Yeri">
+                <span asp-validation-for="@Model.BirthPlace" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="BirthDate" class="form-label">Doğum Günü :</label>
+                    <input style="width:250px" asp-for="BirthDate" type="date" class="form-control" placeholder="Doğum Günü">
+                    <span asp-validation-for="@Model.BirthDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="StartDateOfWork" class="form-label">İşe Başlama Tarihi :</label>
+                <input style="width:250px" asp-for="StartDateOfWork" type="date" class="form-control">
+                <span asp-validation-for="@Model.StartDateOfWork" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight: bold; margin-left: 50px" asp-for="EndDateOfWork" class="form-label">İşten Çıkış Tarihi : </label>
+                    <input style="width: 250px; margin-left: 50px" asp-for="EndDateOfWork" type="date" class="form-control">
+                    <span asp-validation-for="@Model.EndDateOfWork" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Job" class="form-label">Meslek :</label>
+                <input style="width:250px" asp-for="Job" type="text" class="form-control" placeholder="İş">
+                <span asp-validation-for="@Model.Job" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="Job" class="form-label">Şirket :</label>
+                    <select style="font-weight:bold" asp-for="CompanyId" asp-items="@ViewBag.CompanyList" class="form-select me-3 w-auto">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start ">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="IsActive" class="form-check-label"> Cinsiyet Erkekse İşaretleyiniz :</label>
+                <input asp-for="Gender" type="checkbox">
+                <span asp-validation-for="@Model.Gender" class="text-danger"></span>
+            </div>
+
+            <div class="justify-content-end" style="margin-left:45px;">
+                <label style="font-weight: bold; margin-left: 45px" asp-for="Maas" class="form-label">Maaş :</label>
+                <input style="width: 250px; margin-left: 45px" asp-for="Maas" type="number" class="form-control" placeholder="Maaş" min="8500">
+                <span asp-validation-for="@Model.Maas" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-1 row">
+            <div class="col-sm-0">
+                <input hidden style="align-items:flex-start" asp-for="IsActive" type="checkbox" class="form-control">
+                <span asp-validation-for="@Model.IsActive" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-dark" style="font-weight:bold" asp-action="AddManager" asp-controller="Admin">EKLE</button>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script>
+        const startDateInput = document.querySelector('input[name="StartDateOfWork"]');
+        const endDateInput = document.querySelector('input[name="EndDateOfWork"]');
+        const isActiveCheckbox = document.querySelector('input[name="IsActive"]');
+        startDateInput.addEventListener('change', checkDateRange);
+        endDateInput.addEventListener('change', checkDateRange);
+
+        function checkDateRange() {
+            const startDateInput = document.querySelector('input[name="StartDateOfWork"]');
+            const endDateInput = document.querySelector('input[name="EndDateOfWork"]');
+            const isActiveCheckbox = document.querySelector('input[name="IsActive"]');
+
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            const today = new Date();
+            today.setDate(today.getDate() - 1);
+            const nextTenDays = new Date();
+            nextTenDays.setDate(today.getDate() + 10);
+
+            if (startDate >= today && startDate <= nextTenDays) {
+                isActiveCheckbox.checked = true;
+            } else {
+                isActiveCheckbox.checked = false;
+            }
+        }
+    </script>
+}

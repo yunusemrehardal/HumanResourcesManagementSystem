@@ -1,0 +1,147 @@
+﻿@model AdvanceViewModel
+@inject Infrastructure.Data.ApplicationDbContext db
+
+<div class="card-body">
+    <form method="post">
+        <input type="hidden" asp-for="@Model.PersonelId" />
+        <div>
+            <div class="d-flex justify-content-between">
+                <div class="mb-3">
+                    <label style="font-weight:bold"  class="form-label">Avans Talep Tutarı :</label>
+                    <input min="1" style="width:500px" id = "AdvancePaymentRequest" asp-for="AdvancePaymentRequest" type="number" class="form-control" placeholder="Avans Talep Tutarı">
+                    <span asp-validation-for="@Model.AdvancePaymentRequest" class="text-danger"></span>
+                </div>
+                @if (@db.Advances.Where(x => x.PersonelId == Model.PersonelId).OrderByDescending(x => x.AdvanceRequestDate).FirstOrDefault()?.RemainingAdvancePaymentRequest != null)
+                {
+                    <div class="mb-3">
+                        <label style="font-weight:bold"  class="form-label">Kalan Avans Tutarı :</label>
+                        <label style="font-weight:bold" asp-for="AdvancePaymentRequest" class="form-label">@db.Advances.Where(x=>x.PersonelId==Model.PersonelId && x.AdvancePaymentFood==null && x.AdvancePaymentOther==null && x.AdvancePaymentWay==null && x.AdvancePaymentAccomodation==null && x.AdvanceType==false && x.IsItConfirmed == true && x.IsActive == true).OrderByDescending(x=>x.AdvanceRequestDate).FirstOrDefault()?.RemainingAdvancePaymentRequest</label>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label style="font-weight:bold"  class="form-label">Kalan Avans Tutarı :</label>
+                        <label style="font-weight:bold" asp-for="AdvancePaymentRequest" class="form-label">@db.Personels.Find(Model.PersonelId).MaxAdvanceLimit</label>
+                    </div>
+                }
+            </div>
+            <div class="mb-3 w-25">
+                <label style="font-weight:bold" asp-for="AdvanceType" class="form-label">Kurumsal İş Avansı mı?</label>
+                <div class="w-25 h-25">
+                    <input asp-for="AdvanceType" id="AdvanceType" type="checkbox" class="form-control">
+                    <span asp-validation-for="@Model.AdvanceType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label hidden style="font-weight:bold" asp-for="AdvancePaymentWay" class="form-label">Avans Talep Tutarı :</label>
+                <input min="1" hidden style="width:500px" asp-for="AdvancePaymentWay" type="number" class="form-control" placeholder="Yol Avans Talep Tutarı">
+                <span asp-validation-for="@Model.AdvancePaymentWay" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label hidden style="font-weight:bold" asp-for="AdvancePaymentFood" class="form-label">Avans Talep Tutarı :</label>
+                <input min="1" hidden style="width:500px" asp-for="AdvancePaymentFood" type="number" class="form-control" placeholder="Yemek Avans Talep Tutarı">
+                <span asp-validation-for="@Model.AdvancePaymentFood" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label hidden style="font-weight:bold" asp-for="AdvancePaymentAccomodation" class="form-label">Avans Talep Tutarı :</label>
+                <input min="1" hidden style="width:500px" asp-for="AdvancePaymentAccomodation" type="number" class="form-control" placeholder="Seyahat Avans Talep Tutarı">
+                <span asp-validation-for="@Model.AdvancePaymentAccomodation" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label hidden style="font-weight:bold" asp-for="AdvancePaymentOther" class="form-label">Avans Talep Tutarı :</label>
+                <input min="1" hidden style="width:500px" asp-for="AdvancePaymentOther" type="number" class="form-control" placeholder="Diğer Avans Talep Tutarı">
+                <span asp-validation-for="@Model.AdvancePaymentOther" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label style="font-weight:bold" asp-for="Currency" class="form-label">Para Birimi :</label>
+                <input style="width:500px" asp-for="Currency" type="text" class="form-control" placeholder="para birimi" value="@Model.Currency">
+                <span asp-validation-for="@Model.Currency" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="Description" class="form-label">Açıklama :</label>
+            <input style="width:500px" asp-for="Description" type="text" class="form-control" placeholder="Avans istek sebebi açıklama">
+            <span asp-validation-for="@Model.Description" class="text-danger"></span>
+        </div>
+        <input asp-for="IsItConfirmed" type="checkbox" hidden class="form-control">
+        <input style="width:250px" asp-for="IsActive" type="checkbox" class="form-control" hidden>
+        <button style="font-weight:bold" type="submit" class="btn btn-outline-dark" asp-action="AddAdvanceRequest" asp-controller="Personel">EKLE</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const currencyInput = document.getElementById('Currency');
+        const advanceTypeCheckbox = document.getElementById('AdvanceType');
+        currencyInput.readOnly = true;
+        currencyInput.value = "TRY";
+
+        advanceTypeCheckbox.addEventListener('change', function () {
+            if (advanceTypeCheckbox.checked) {
+                currencyInput.readOnly = false;
+                currencyInput.placeholder = "Para Birimi";
+            } else {
+                currencyInput.readOnly = true;
+                currencyInput.value = "TRY";
+                currencyInput.placeholder = "";
+            }
+        });
+
+        currencyInput.addEventListener('input', function () {
+            if (!/^(TRY|USD|EUR)$/.test(currencyInput.value)) {
+                currencyInput.setCustomValidity("Sadece TRY, USD ve EUR para birimleri kabul edilir.");
+            } else {
+                currencyInput.setCustomValidity("");
+            }
+        });
+    </script>
+    <script>
+        $('input[name="AdvanceType"]').change(function () {
+            if ($(this).is(':checked')) {
+                $('input[name="AdvancePaymentWay"]').removeAttr('hidden');
+                $('input[name="AdvancePaymentFood"]').removeAttr('hidden');
+                $('input[name="AdvancePaymentAccomodation"]').removeAttr('hidden');
+                $('input[name="AdvancePaymentOther"]').removeAttr('hidden');
+                $('label[name="AdvancePaymentWay"]').removeAttr('hidden');
+                $('label[name="AdvancePaymentFood"]').removeAttr('hidden');
+                $('label[name="AdvancePaymentAccomodation"]').removeAttr('hidden');
+                $('label[name="AdvancePaymentOther"]').removeAttr('hidden');
+                $('input[name="AdvancePaymentRequest"]').prop('readonly', true); // added this line
+            } else {
+                $('input[name="AdvancePaymentWay"]').attr('hidden', true);
+                $('input[name="AdvancePaymentFood"]').attr('hidden', true);
+                $('input[name="AdvancePaymentAccomodation"]').attr('hidden', true);
+                $('input[name="AdvancePaymentOther"]').attr('hidden', true);
+                $('label[name="AdvancePaymentWay"]').attr('hidden', true);
+                $('label[name="AdvancePaymentFood"]').attr('hidden', true);
+                $('label[name="AdvancePaymentAccomodation"]').attr('hidden', true);
+                $('label[name="AdvancePaymentOther"]').attr('hidden', true);
+                $('input[name="AdvancePaymentRequest"]').prop('readonly', false); // added this line
+            }
+        });
+    </script>
+    <script>
+        const advancePaymentWayInput = document.querySelector('input[name="AdvancePaymentWay"]');
+        const advancePaymentFoodInput = document.querySelector('input[name="AdvancePaymentFood"]');
+        const advancePaymentAccomodationInput = document.querySelector('input[name="AdvancePaymentAccomodation"]');
+        const advancePaymentOtherInput = document.querySelector('input[name="AdvancePaymentOther"]');
+        const advancePaymentRequestInput = document.querySelector('input[name="AdvancePaymentRequest"]');
+
+
+        advancePaymentWayInput.addEventListener('input', calculateTotal);
+        advancePaymentFoodInput.addEventListener('input', calculateTotal);
+        advancePaymentAccomodationInput.addEventListener('input', calculateTotal);
+        advancePaymentOtherInput.addEventListener('input', calculateTotal);
+
+        function calculateTotal() {
+
+            const advancePaymentWay = Number(advancePaymentWayInput.value);
+            const advancePaymentFood = Number(advancePaymentFoodInput.value);
+            const advancePaymentAccomodation = Number(advancePaymentAccomodationInput.value);
+            const advancePaymentOther = Number(advancePaymentOtherInput.value);
+            const total = advancePaymentWay + advancePaymentFood + advancePaymentAccomodation + advancePaymentOther;
+            advancePaymentRequestInput.value = total;
+        }
+    </script>
+}

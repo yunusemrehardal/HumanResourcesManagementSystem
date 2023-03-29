@@ -1,0 +1,107 @@
+﻿@model Tuple<CompanyViewModel, List<ApplicationCore.Entities.Manager>>
+@inject Infrastructure.Data.ApplicationDbContext db
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3 d-flex justify-content-start">
+            <input type="hidden" asp-for="@Model.Item1.Id" />
+            @if (Model.Item1.LogoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="Alternate Text" />
+            }
+
+            @if (Model.Item1.LogoUrl != null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/@Model.Item1.LogoUrl" alt="Alternate Text" />
+            }
+            <div class="justify-content-end" style="margin-left:50px">
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.Name" style="font-weight:bold" class="form-label">Ad : </label>
+                    <label class="form-label"> @Model.Item1.Name</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.Address" style="font-weight:bold" class="form-label">Adres : </label>
+                    <label class="form-label"> @Model.Item1.Address</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.PhoneNumber" style="font-weight:bold" class="form-label">Tel No : </label>
+                    <label class="form-label"> @Model.Item1.PhoneNumber</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.MailAdress" style="font-weight:bold" class="form-label">E-Posta : </label>
+                    <label class="form-label"> @Model.Item1.MailAdress</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.Title" style="font-weight:bold" class="form-label">Ünvanı : </label>
+                    <label class="form-label"> @Model.Item1.Title</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.MersisNo" style="font-weight:bold" class="form-label">MERSIS No : </label>
+                    <label class="form-label"> @Model.Item1.MersisNo</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.TaxNo" style="font-weight:bold" class="form-label">Vergi No : </label>
+                    <label class="form-label"> @Model.Item1.TaxNo</label>
+                </div>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px">
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.TaxDepartment" style="font-weight:bold" class="form-label">Vergi Dairesi : </label>
+                    <label class="form-label"> @Model.Item1.TaxDepartment</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Kuruluş Tarihi : </label>
+                    <label class="form-label"> @(Model.Item1.FoundationYear == null ? "" : Model.Item1.FoundationYear.Value.ToString("d"))</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="@Model.Item1.IsActive" style="font-weight:bold" class="form-check-label">Aktif Mi? : </label>
+                    <input asp-for="@Model.Item1.IsActive" type="checkbox" disabled>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Kontrat Başlangıç : </label>
+                    <label class="form-label"> @(Model.Item1.ContractStartYear == null ? "" : Model.Item1.ContractStartYear.Value.ToString("d"))</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Kontrat Bitiş : </label>
+                    <label class="form-label"> @(Model.Item1.ContractEndYear == null ? "" : Model.Item1.ContractEndYear.Value.ToString("d"))</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label"> Üyelik Paketi: </label>
+                    <label class="form-label">@(db.Packages.FirstOrDefault(x=>x.Id == Model.Item1.PackageId)!.Name)</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Kalan Üyelik Paketi Gün Sayısı : </label>
+                    <label class="form-label">@(Model.Item1.RemainingPackageTime.Value.Days) gün </label>
+                </div>
+
+                <div>
+                    <table class="table mb-1">
+                        <tr>
+                            <th>
+                                <label style="font-weight:bold">Şirket Yöneticileri</label>
+                            </th>
+                        </tr>
+                        <tbody>
+                            @foreach (var manager in Model.Item2)
+                            {
+                                @if (manager.Company == null)
+                                {
+                                    @*<td>-</td>*@
+                                }
+                                else if (manager.Company.Id == Model.Item1.Id)
+                                {
+                                    <tr>
+                                        <td>@manager.FirstName @manager.Surname</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark mx-2" asp-action="UpdateCompany" asp-controller="Admin" asp-route-id="@Model.Item1.Id">GÜNCELLE</a>
+            <a class="btn btn-outline-dark" asp-action="ListCompany" asp-controller="Admin">LİSTE</a>
+        </div>
+    </form>
+</div>

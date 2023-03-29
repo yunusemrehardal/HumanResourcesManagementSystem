@@ -1,0 +1,168 @@
+﻿@using Infrastructure.Data;
+@using Newtonsoft.Json;
+@model List<PermissionViewModel>
+
+@{
+    ViewData["Title"] = "İzin Görüntüleme";
+}
+
+@if (Model != null)
+{
+    <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">PDF Dosyası</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfEmbed" src="" type="application/pdf" style="width:100%;height:80vh;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" asp-controller="Manager" asp-action="ShowAllPermissionRequests" enctype="multipart/form-data">
+        <table class="table table-striped" style="font-size:15px">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Ad-Soyad
+                    </th>
+                    <th>
+                        İzin Gün Sayısı
+                    </th>
+                    <th>
+                        İzin Tipi
+                    </th>
+                    <th>
+                        İstek Tarihi
+                    </th>
+                    <th>
+                        Kabul/Red Etme
+                    </th>
+                    <th>
+                        Rapor Döküman
+                    </th>
+                    <th>
+                        Personele Bildir
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (PermissionViewModel item in Model)
+                    {
+                        <tr>
+                            <td><input type="hidden" asp-for="@item.PersonelId" /></td>
+                            <td>@(item.Personel.FirstName + " " + item.Personel.Surname)</td>
+                            <td>@(item.CountOfPermittedDays.Value.Days) gün</td>
+                            <td>@(item.PermissionType)</td>
+                            <td>@item.RequestDate.Value.ToShortDateString()</td>
+                            <td>
+                                <input id="myCheckBox"@(item.ApprovalState ? "style=pointer-events:none" : "") @(item.ApprovalState ? "checked" : "") type="checkbox" class="form-control w-100" name="approvalState_@item.Id" value="true" />
+
+                            </td>
+                            @if (item.PermissionFileUrl != null)
+                            {
+                                <td>
+                                    <a href="~/downloads/@item.PermissionFileUrl" class="pdf-link">PDF Dosyasını Görüntüle</a>
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                            @if (!item.ApprovalState)
+                            {
+                                <td class="text-end">
+                                    <button class="btn btn-danger" type="submit" name="id" value="@item.Id">Onayla</button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-end">
+                                    <label value="@item.Id">Onaylandı</label>
+                                </td>
+                            }
+                            <td>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+        <div id="pdfLink"></div>
+    </form>
+}
+
+
+
+
+@section Scripts{
+    <script>
+        var checkBox = document.getElementById("myCheckBox");
+
+        if (!checkBox.checked) {
+            checkBox.labels[0].innerHTML = "" + checkBox.labels[0].innerHTML;
+        }
+
+        $(document).ready(function () {
+            // Tüm satırlarda dolaş
+            $('input[name^="isActive_"]').each(function () {
+                var id = $(this).attr('name').split('_')[1]; // Satırın id'sini al
+                var isConfirmed = $('input[name="isItConfirmed_' + id + '"]'); // isItConfirmed öğesini bul
+                if (!$(this).is(':checked')) { // isActive işaretli değilse
+                    isConfirmed.prop('checked', false); // isItConfirmed'i de işaretsiz yap
+                    isConfirmed.prop('disabled', true); // isItConfirmed'i etkisiz hale getir
+                }
+                $(this).change(function () { // isActive değiştiğinde
+                    isConfirmed.prop('disabled', !$(this).is(':checked')); // isItConfirmed'i etkinleştir veya devre dışı bırak
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.pdf-link', function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).attr('href');
+            $('#pdfEmbed').attr('src', pdfUrl);
+            $('#pdfModal').modal('show');
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#myCheckBox").change(function () {
+                if (this.checked) {
+                    $("#myCheckBox").next("label").html("<i class='fa fa-check'></i> Onaylandı");
+                    $("#myCheckBox").next("label").addClass("btn-success");
+                    $("#myCheckBox").next("label").removeClass("btn-secondary");
+                } else {
+                    $("#myCheckBox").next("label").html("<i class='fa fa-times'></i>");
+                    $("#myCheckBox").next("label").removeClass("btn-success");
+                    $("#myCheckBox").next("label").addClass("btn-secondary");
+                }
+            });
+        });
+    </script>
+
+S
+}
+
+
+
+
+
+
+
+
+

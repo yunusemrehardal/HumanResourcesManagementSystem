@@ -1,0 +1,65 @@
+﻿@model CompanyViewModel
+<div class="card-body">
+    <form asp-controller="Admin" asp-action="UpdateCompany" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input asp-for="Id" type="hidden" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Logo" class="form-label">Logo</label>
+            <input asp-for="Logo" type="file" class="form-control">
+            <span asp-validation-for="Logo" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">Adres</label>
+            <input asp-for="Address" type="text" class="form-control" placeholder="Adres">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label">Telefon Numarası</label>
+            <input asp-for="PhoneNumber" type="number" class="form-control" placeholder="Telefon Numarası">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="MailAdress" class="form-label">E-Posta Adresi</label>
+            <input asp-for="MailAdress" type="email" class="form-control" placeholder="eposta adresi">
+            <span asp-validation-for="MailAdress" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Ünvan</label>
+            <input asp-for="Title" type="text" class="form-control" placeholder="ünvan">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        @*<div class="mb-3">
+            <label asp-for="IsActive" class="form-label">Aktif Mi?</label>
+            <input asp-for="IsActive" type="checkbox" class="form-control" placeholder="aktif mi?">
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+        </div>*@
+        <div class="mb-3">
+            <label asp-for="ContractStartYear" class="form-label">Kontrat Başlangıç</label>
+            <input asp-for="ContractStartYear" type="date" class="form-control" placeholder="Kontrat Başlangıç">
+            <span asp-validation-for="ContractStartYear" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ContractEndYear" class="form-label">Kontrat Bitiş</label>
+            <input asp-for="ContractEndYear" type="date" class="form-control" placeholder="Kontrat Bitiş">
+            <span asp-validation-for="ContractEndYear" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" class="form-label">Yeni Paket Seç :</label>
+            <select style="font-weight:bold" asp-for="PackageId" asp-items="@ViewBag.PackageListe" class="form-select me-3 w-auto">
+            </select>
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Paketin Başlangıç Tarihi:</label>
+            <input asp-for="StartDateOfPackage" type="date" class="form-control">
+            <span asp-validation-for="StartDateOfPackage" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Paketin Bitiş Tarihi:</label>
+            <input asp-for="EndDateOfPackage" type="date" class="form-control" >
+            <span asp-validation-for="EndDateOfPackage" class="text-danger"></span>
+        </div>
+        <button class="btn btn-outline-dark fw-bold" type="submit" asp-action="UpdateCompany" asp-controller="Admin" asp-route-id="@Model.Id">GÜNCELLE</button>
+        <a class="btn btn-outline-dark fw-bold" asp-action="ListCompany" asp-controller="Admin">ŞİRKET LİSTESİ</a>
+    </form>
+</div>

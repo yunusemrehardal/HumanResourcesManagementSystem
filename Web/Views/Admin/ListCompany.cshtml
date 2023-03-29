@@ -1,0 +1,48 @@
+﻿@model List<ApplicationCore.Entities.Company>
+@{
+    ViewData["Title"] = "Şirket Listesi";
+}
+<table class="table table-striped" style="font-size:20px">
+    <thead>
+        <tr style="padding:20px">
+            <th>
+                Şirket Adı
+            </th>
+            <th>
+                Ünvanı
+            </th>
+            <th>
+                Sözleşme Başlangıç Tarihi
+            </th>
+            <th>
+                Sözleşme Bitiş Tarihi
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.Name )</td>
+                    <td>@item.Title</td>
+                    <td>@(item.ContractStartYear == null ? "" : item.ContractStartYear.Value.ToString("d"))</td>
+                    <td>@(item.ContractEndYear == null ? "" : item.ContractEndYear.Value.ToString("d"))</td>
+                    <td class="text-end ">
+                        <a class="btn btn-danger d-flex justify-content-center align-items-center" style="width:150px;height:40px;font-weight:bold" asp-controller="Admin" asp-action="CompanyDetails" asp-route-id="@item.Id">DETAY GÖSTER</a>
+                    </td>
+                    <td class="text-end">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center" style="width:150px;height:40px;font-weight:bold" asp-controller="Admin" asp-action="UpdateCompany" asp-route-id="@item.Id">GÜNCELLE</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

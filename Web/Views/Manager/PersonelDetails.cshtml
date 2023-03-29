@@ -1,0 +1,124 @@
+﻿@model PersonelViewModel
+@{
+    ViewData["Title"] = "Personel Details";
+}
+@inject Infrastructure.Data.ApplicationDbContext _db
+<div class="card-body">
+    <form method="get" enctype="multipart/form-data">
+        <div class="mb-3 d-flex justify-content-center">
+            @if (Model.Gender == true && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="Alternate Text" />
+            }
+            @if (Model.Gender == false && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="Alternate Text" />
+            }
+            @if ((Model.Gender == true || Model.Gender == false) && Model.PhotoUrl != null)
+            {
+
+                <img style="width: 150px; height: 150px;" src="~/img/@Model.PhotoUrl" alt="Alternate Text" />
+            }
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 m-auto">
+                    <label asp-for="FirstName" style="font-weight:bold" class="form-label">Ad : </label>
+                    <label class="form-label"> @Model.FirstName</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="SecondName" style="font-weight:bold" class="form-label">İkinci Ad : </label>
+                    <label class="form-label"> @Model.SecondName</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="Surname" style="font-weight:bold" class="form-label">Soyad : </label>
+                    <label class="form-label"> @Model.Surname</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="SecondSurname" style="font-weight:bold" class="form-label">İkinci Soyad : </label>
+                    <label class="form-label"> @Model.SecondSurname</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="BirthDate" style="font-weight:bold" class="form-label">Doğum Tarihi : </label>
+                    <label class="form-label"> @Model.BirthDate!.Value.ToShortDateString()</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="BirthPlace" style="font-weight:bold" class="form-label">Doğum Yeri : </label>
+                    <label class="form-label"> @Model.BirthPlace</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="TC" style="font-weight:bold" class="form-label">TC : </label>
+                    <label class="form-label"> @Model.TC</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="StartDateOfWork" style="font-weight:bold" class="form-label">İşe Başlama Tarihi : </label>
+                    <label class="form-label"> @Model.StartDateOfWork!.Value.ToShortDateString()</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="EndDateOfWork" style="font-weight:bold" class="form-label">İşten Çıkış Tarihi : </label>
+                    <label class="form-label">
+                        @(Model.EndDateOfWork != null ? Model.EndDateOfWork.Value.ToString("dd/MM/yyyy") : "-")
+                    </label>
+                </div>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 m-auto">
+                    <label asp-for="Job" style="font-weight:bold" class="form-label">İş : </label>
+                    <label class="form-label"> @Model.Job</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="Address" style="font-weight:bold" class="form-label">Adres : </label>
+                    <label class="form-label"> @Model.Address</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="PhoneNumber" style="font-weight:bold" class="form-label">Telefon Numarası : </label>
+                    <label class="form-label"> @Model.PhoneNumber</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="MailAdress" style="font-weight:bold" class="form-label">Mail Adresi : </label>
+                    <label class="form-label"> @_db.Personels.Find(Model.Id).MailAdress</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="GenderText" style="font-weight:bold" class="form-label">Cinsiyet : </label>
+                    <label class="form-label"> @Model.GenderText</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Departman Adı : </label>
+                    <label class="form-label"> @Model.Department!.Name</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Şirket Adı : </label>
+                    <label class="form-label"> @Model.Company!.Name</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Yönetici Adı : </label>
+                    <label class="form-label"> @Model.Department!.Manager.FirstName</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label style="font-weight:bold" class="form-label">Yönetici Soyadı : </label>
+                    <label class="form-label"> @Model.Department!.Manager.Surname</label>
+                </div>
+                <div class="mb-1">
+                    <label style="font-weight:bold" asp-for="IsActive" class="form-check-label"> Aktif mi? :</label>
+                    <input asp-for="IsActive" type="checkbox" disabled>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark" asp-action="ListPersonel" asp-controller="Manager">Personel Listesi</a>
+        </div>
+    </form>
+    <hr />
+    <h5 class="text-center mb-3">Maas Güncelleme</h5>
+    <form enctype="multipart/form-data" method="post">
+        <div class="mb-1 m-auto d-flex justify-content-center align-items-baseline">
+            <label style="font-weight:bold" class="form-label d-flex">Personel Maaşı :</label>
+            &nbsp&nbsp&nbsp&nbsp&nbsp
+            <input style="width:250px" asp-for="Maas" type="number" class="form-control" placeholder=" yeni maaşı girin">
+            &nbsp&nbsp&nbsp&nbsp&nbsp
+            <span asp-validation-for="Maas" class="text-danger"></span>
+            <button class="btn btn-outline-dark ms-3" asp-route-id="@Model.Id" asp-route-data="Maas" asp-action="UpdatePersonelSalary" asp-controller="Manager">Güncelle</button>
+        </div>
+    </form>
+</div>
+
+

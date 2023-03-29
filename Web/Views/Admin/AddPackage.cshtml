@@ -1,0 +1,111 @@
+﻿@model PackageViewModel
+
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Name" class="form-label">Paket Adı :</label>
+                <input style="width:250px" asp-for="Name" type="text" class="form-control" id="nameInput" placeholder="Ad">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="Price" class="form-label">Fiyat :</label>
+                    <input style="width:250px" asp-for="Price" type="number" class="form-control" id="priceInput" placeholder="Paket Fiyatı">
+                    <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="StartDateOfRelease" class="form-label">Yayınlanma Tarihi :</label>
+                <input style="width:250px" asp-for="StartDateOfRelease" type="date" class="form-control">
+                <span asp-validation-for="@Model.StartDateOfRelease" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="EndDateOfRelease" class="form-label">Yayından Kaldırılacağı Tarihi :</label>
+                    <input style="width:250px" asp-for="EndDateOfRelease" type="date" class="form-control" id="EndDateOfRelease" placeholder="İkinci Soyad">
+                    <span asp-validation-for="@Model.EndDateOfRelease" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                @*<label style="font-weight:bold" asp-for="IsActive" class="form-label">Paket Aktif mi ?</label>*@
+                <input style="width:250px" asp-for="IsActive" type="hidden" id="IsActive" class="form-control">
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="Currency" class="form-label">Para Birimi : </label>
+                    <input style="width:250px" asp-for="Currency" type="text" class="form-control" id="currencyInput" placeholder="para birimi">
+                    <span asp-validation-for="@Model.Currency" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-dark" style="font-weight:bold" asp-action="AddPackage" asp-controller="Admin">EKLE</button>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function () {
+                // name input validasyonu
+                if ($('#nameInput').val().length < 2) {
+                    alert('Name en az 2 karakter olmalıdır.');
+                    return false;
+                }
+
+                // price input validasyonu
+                if ($('#priceInput').val() < 0) {
+                    alert('Fiyat 0\'dan küçük olamaz.');
+                    return false;
+                }
+
+                // currency input validasyonu
+                var currency = $('#currencyInput').val().toUpperCase();
+                if (currency !== 'TRY' && currency !== 'USD' && currency !== 'EUR') {
+                    alert('Sadece TRY, USD ve EUR para birimleri kullanılabilir.');
+                    return false;
+                }
+
+                // isactive değeri ataması
+                var endDate = new Date($('#EndDateOfRelease').val());
+                var today = new Date();
+                if (endDate <= today) {
+                    $('#IsActive').val('False');
+                }
+                else {
+                    $('#IsActive').val('True');
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        var startDateOfRelease = document.getElementById("StartDateOfRelease");
+        var endDateOfRelease = document.getElementById("EndDateOfRelease");
+
+        // Event listener for when the EndDateOfRelease input is changed
+        endDateOfRelease.addEventListener('change', function () {
+            // Convert input values to Date objects
+            var startDate = new Date(startDateOfRelease.value);
+            var endDate = new Date(endDateOfRelease.value);
+
+            // Check if EndDateOfRelease is after StartDateOfRelease
+            if (endDate <= startDate) {
+                alert("Yayından kaldırılacağı tarih, yayınlanma tarihinden sonra olmalıdır");
+                endDateOfRelease.value = "";
+                return;
+            }
+        });
+    </script>
+
+   
+
+
+
+}

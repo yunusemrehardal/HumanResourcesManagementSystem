@@ -1,0 +1,589 @@
+﻿@using ApplicationCore.Entities;
+@using ApplicationCore.Interfaces;
+@using Infrastructure.Data;
+@using Microsoft.AspNetCore.Identity;
+@using Web.Interfaces;
+@using Web.Models;
+@inject SignInManager<ApplicationCore.Entities.ApplicationUser> SignInManager
+@inject UserManager<ApplicationCore.Entities.ApplicationUser> UserManager
+@inject ApplicationDbContext db
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Manager") || User.IsInRole("Personel") || User.IsInRole("Admin"))
+    {
+        var userId = @UserManager.GetUserAsync(User).Result.Id;
+        var activeuser = @UserManager.Users.FirstOrDefault(u => u.Id == userId);
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+            <title>HRM - Human Resources Management</title>
+            <link rel="shortcut icon" href="~/assets/img/favicon.png">
+            <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+            <link rel="stylesheet" href="~/assets/plugins/fontawesome/css/fontawesome.min.css">
+            <link rel="stylesheet" href="~/assets/plugins/fontawesome/css/all.min.css">
+            <link rel="stylesheet" href="~/assets/css/style.css">
+            <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        </head>
+        <body>
+
+            <div class="main-wrapper">
+
+                <div class="header">
+
+                    <div class="header-left" style="font-weight:bold">
+                        <a class="logo w-100">
+                            <img src="~/img/LogoMaybe.jpg" alt="Logo" class="w-50 h-100">MaybeSoft
+                        </a>
+
+                        <a href="javascript:void(0);" id="toggle_btn"></a>
+                    </div>
+
+                    <a class="mobile_btn" id="mobile_btn">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                    <div class="d-flex justify-content-end align-items-center">
+
+                        @if (User.IsInRole("Manager"))
+                        {
+                            var activeManager = @db.Managers.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+                            <div class="nav-item dropdown has-arrow main-drop mt-0">
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <span class="user-img">
+                                        @if (activeManager.Photo != null)
+                                        {
+                                            <img src="~/img/@activeManager.Photo" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activeManager.Gender == true && activeManager.Photo == null)
+                                        {
+                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activeManager.Gender == false && activeManager.Photo == null)
+                                        {
+                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        <span class="online"></span>
+                                    </span>
+                                    <span>@User.Identity.Name</span>
+                                </a>
+                                <div class="dropdown-menu">
+
+                                    <a class="dropdown-item" asp-action="ManagerDetails" asp-controller="Manager">
+                                        <i data-feather="user" class="mr-1"></i>
+                                        DETAY
+                                    </a>
+                                    <a class="dropdown-item" asp-action="ManagerUpdate" asp-controller="Manager">
+                                        <i data-feather="settings" class="mr-1"></i>
+                                        GÜNCELLEME
+                                    </a>
+                                    @*<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            <i data-feather="log-out" class="mr-1"></i>
+                                            ÇIKIŞ
+                                        </a>*@
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button  class="dropdown-item" type="submit"><span class="fs-2"><i data-feather="log-out" class="mr-1"></i> ÇIKIŞ YAP</span></button>
+                                        <div class="bg-white"><partial name="_LoginPartial" /></div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            var activeAdmin = @db.Admins.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+                            <div class="nav-item dropdown has-arrow main-drop">
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <span class="user-img">
+                                        @if (activeAdmin.Photo != null)
+                                        {
+                                            <img src="~/img/@activeAdmin.Photo" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activeAdmin.Gender == true && activeAdmin.Photo == null)
+                                        {
+                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activeAdmin.Gender == false && activeAdmin.Photo == null)
+                                        {
+                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        <span class="status online"></span>
+                                    </span>
+                                    <span>@User.Identity.Name</span>
+                                </a>
+                                <div class="dropdown-menu">
+
+                                    <a class="dropdown-item" asp-action="AdminDetails" asp-controller="Admin">
+                                        <i data-feather="user" class="mr-1"></i>
+                                        DETAY
+                                    </a>
+                                    <a class="dropdown-item" asp-action="AdminUpdate" asp-controller="Admin">
+                                        <i data-feather="settings" class="mr-1"></i>
+                                        GÜNCELLEME
+                                    </a>
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button class="dropdown-item" type="submit"><span class="fs-2"><i data-feather="log-out" class="mr-1"></i> ÇIKIŞ YAP</span></button>
+                                        <div class="bg-white"><partial name="_LoginPartial" /></div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        }
+                        @if (User.IsInRole("Personel"))
+                        {
+                            var activePersonel = @db.Personels.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+                            <div class="nav-item dropdown has-arrow main-drop">
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <span class="user-img">
+                                        @if (activePersonel.Photo != null)
+                                        {
+                                            <img src="~/img/@activePersonel.Photo" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activePersonel.Gender == true && activePersonel.Photo == null)
+                                        {
+                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        else if (activePersonel.Gender == false && activePersonel.Photo == null)
+                                        {
+                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" class="rounded-circle" width="50" height="50" />
+                                        }
+                                        <span class="status online"></span>
+                                    </span>
+                                    <span>@User.Identity.Name</span>
+                                </a>
+                                <div class="dropdown-menu">
+
+                                    <a class="dropdown-item" asp-action="PersonelDetails" asp-controller="Personel">
+                                        <i data-feather="user" class="mr-1"></i>
+                                        DETAY
+                                    </a>
+                                    <a class="dropdown-item" asp-action="PersonelUpdate" asp-controller="Personel">
+                                        <i data-feather="settings" class="mr-1"></i>
+                                        GÜNCELLEME
+                                    </a>
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button class="dropdown-item" type="submit"><span class="fs-2"><i data-feather="log-out" class="mr-1"></i> ÇIKIŞ YAP</span></button>
+                                        <div class="bg-white"><partial name="_LoginPartial" /></div>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+                <div class="sidebar" id="sidebar">
+                    <div class="sidebar-inner slimscroll">
+                        <div class="sidebar-contents">
+
+                            <div id="sidebar-menu" class="sidebar-menu">
+                                <div class="mobile-show">
+                                    <div class="offcanvas-menu">
+                                        <div class="user-info align-center bg-theme text-center">
+                                            <span class="lnr lnr-cross  text-white" id="mobile_btn_close">X</span>
+                                            <a href="javascript:void(0)" class="d-block menu-style text-white">
+                                                <div class="user-avatar d-inline-block mr-3">
+
+                                                    @if (User.IsInRole("Manager"))
+                                                    {
+                                                        var activeManager = @db.Managers.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+                                                        if (activeManager.Photo != null)
+                                                        {
+                                                            <img src="~/img/@activeManager.Photo" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activeManager.Gender == true && activeManager.Photo == null)
+                                                        {
+                                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activeManager.Gender == false && activeManager.Photo == null)
+                                                        {
+                                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+
+                                                    }
+
+
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        var activeAdmin = @db.Admins.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+                                                        if (activeAdmin.Photo != null)
+                                                        {
+                                                            <img src="~/img/@activeAdmin.Photo" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activeAdmin.Gender == true && activeAdmin.Photo == null)
+                                                        {
+                                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activeAdmin.Gender == false && activeAdmin.Photo == null)
+                                                        {
+                                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        //<img src="assets/img/profiles/avatar-18.jpg" alt="user avatar" class="rounded-circle" width="50">
+                                                    }
+                                                    @if (User.IsInRole("Personel"))
+                                                    {
+                                                        var activePersonel = @db.Personels.FirstOrDefault(x => x.AppUserId == activeuser.Id);
+
+                                                        if (activePersonel.Photo != null)
+                                                        {
+                                                            <img src="~/img/@activePersonel.Photo" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activePersonel.Gender == true && activePersonel.Photo == null)
+                                                        {
+                                                            <img src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+                                                        else if (activePersonel.Gender == false && activePersonel.Photo == null)
+                                                        {
+                                                            <img src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="user avatar" class="rounded-circle" width="50" />
+                                                        }
+
+                                                    }
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-input">
+                                        <div class="top-nav-search">
+                                            <form>
+                                                <input type="text" class="form-control" placeholder="Search here">
+                                                <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div>
+                                        <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header" style="border: solid 2px">
+                                                    <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbarrr">
+                                                        ADMİN İŞLEMLERİ
+                                                    </button>
+                                                </div>
+                                                <div class="collapse navbar-collapse" id="myNavbarrr">
+                                                    <ul class="nav navbar-nav">
+
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="Index">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-address-card" style="margin-right:10px"></i>Özet</div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="AdminDetails">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-info-circle" style="margin-right:10px"></i>Detay</div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="AdminUpdate">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>Güncelleme</div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+
+                                        </nav>
+
+
+                                        <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header" style="border: solid 2px">
+                                                    <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbar">
+                                                        ŞİRKET İŞLEMLERİ
+                                                    </button>
+                                                </div>
+                                                <div class="collapse navbar-collapse" id="myNavbar">
+                                                    <ul class="nav navbar-nav">
+
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="ListCompany">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-list" style="margin-right:10px"></i>Listele</div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="AddCompany">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-plus-square" style="margin-right:10px"></i>Ekle</div>
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </nav>
+
+                                        <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header" style="border: solid 2px">
+                                                    <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbarrrrrr">
+                                                        PAKET İŞLEMLERİ
+                                                    </button>
+                                                </div>
+                                                <div class="collapse navbar-collapse" id="myNavbarrrrrr">
+                                                    <ul class="nav navbar-nav">
+
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="ListPackages">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-list" style="margin-right:10px"></i>Listele</div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="AddPackage">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-plus-square" style="margin-right:10px"></i>Ekle</div>
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </nav>
+
+                                        <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header" style="border: solid 2px">
+                                                    <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbarrrrr">
+                                                        YÖNETİCİ İŞLEMLERİ
+                                                    </button>
+                                                </div>
+                                                <div class="collapse navbar-collapse" id="myNavbarrrrr">
+                                                    <ul class="nav navbar-nav">
+
+                                                        <li>
+                                                            <a asp-controller="Admin" asp-action="AddManager">
+                                                                <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-plus-square" style="margin-right:10px"></i>Yönetici Ekle</div>
+                                                            </a>
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                }
+
+                                @if (User.IsInRole("Personel"))
+                                {
+
+                                    <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                        <div class="container-fluid">
+                                            <div class="navbar-header" style="border: solid 2px">
+                                                <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbar">
+                                                    PERSONEL İŞLEMLERİ
+                                                </button>
+                                            </div>
+                                            <div class="collapse navbar-collapse" id="myNavbar">
+                                                <ul class="nav navbar-nav">
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="Index">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-address-card" style="margin-right:10px"></i>Özet</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="PersonelDetails">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-info-circle" style="margin-right:10px"></i>Detay</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="PersonelUpdate">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>Güncelleme</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="navbar-header" style="border: solid 2px; margin-top:5px">
+                                                <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbar1">
+                                                    AVANS İŞLEMLERİ
+                                                </button>
+                                            </div>
+                                            <div class="collapse navbar-collapse" id="myNavbar1">
+                                                <ul class="nav navbar-nav">
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="AddAdvanceRequest">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>Avans Kullan</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="ListAdvanceRequests">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>Avanslarım</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="navbar-header" style="border: solid 2px; margin-top:5px">
+                                                <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbar2">
+                                                    İZİN İŞLEMLERİ
+                                                </button>
+                                            </div>
+                                            <div class="collapse navbar-collapse" id="myNavbar2">
+                                                <ul class="nav navbar-nav">
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="AddPermissionRequest">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>İzin Kullan</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Personel" asp-action="ListPermissionRequests">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>İzinlerim</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </nav>
+
+
+
+                                }
+                                @if (User.IsInRole("Manager"))
+                                {
+
+                                    <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                        <div class="container-fluid">
+                                            <div class="navbar-header" style="border: solid 2px">
+                                                <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbar">
+                                                    YÖNETİCİ İŞLEMLERİ
+                                                </button>
+                                            </div>
+                                            <div class="collapse navbar-collapse" id="myNavbar">
+                                                <ul class="nav navbar-nav">
+
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="Index">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-address-card" style="margin-right:10px"></i>Özet</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="ManagerDetails">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-info-circle" style="margin-right:10px"></i>Detay</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="ManagerUpdate">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:1rem"><i class="fa-solid fa-pencil-square" style="margin-right:10px"></i>Güncelleme</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                    </nav>
+                                    <nav class="navbar navbar-inverse" style="font-weight: bold">
+                                        <div class="container-fluid">
+                                            <div class="navbar-header" style="width: auto; border: solid 2px">
+                                                <button style="width:190px;font-weight:bold" type="button" class="navbar-toggle btn btn-outline-dark btn-sm" data-toggle="collapse" data-target="#myNavbarr">
+                                                    PERSONEL İŞLEMLERİ
+                                                </button>
+                                            </div>
+                                            <div class="collapse navbar-collapse" id="myNavbarr">
+                                                <ul class="nav navbar-nav">
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="ListPersonel">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size: 0.9rem"><i class="fa-solid fa-list" style="margin-right:10px"></i>Listele</div>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="AddPersonel">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size: 0.9rem"><i class="fa-solid fa-plus-square" style="margin-right:10px"></i>Ekle</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="ShowAllAdvanceRequests">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:0.9rem"><i class="fa-solid fa-list" style="margin-right:10px"></i>Avans İstekleri</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-controller="Manager" asp-action="ShowAllPermissionRequests">
+                                                            <div class="sb-nav-link-icon mt-2" style="font-size:0.9rem"><i class="fa-solid fa-list" style="margin-right:10px"></i>İzin İstekleri</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </nav>
+
+
+                                }
+
+
+                                <ul class="logout d-flex" style="left:0px; bottom:0px;position:fixed;font-weight:bold">
+
+                                    <li style="width:200px">
+                                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            <button style="width:200px" class="btn btn-primary" type="submit"><span class="fs-2">ÇIKIŞ YAP</span></button>
+                                            <div class="bg-white"><partial name="_LoginPartial" /></div>
+                                        </form>
+
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="page-wrapper">
+                    <div class="content container-fluid">
+                        <main role="main" class="pb-3">
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <div class="container" style="background-color:antiquewhite">
+                                    <main role="main" class="pb-1">
+                                        @RenderBody()
+                                    </main>
+                                </div>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="container" style="background-color:lavender">
+                                    <main role="main" class="pb-1">
+                                        @RenderBody()
+                                    </main>
+                                </div>
+                            }
+                            @if (User.IsInRole("Personel"))
+                            {
+                                <div class="container" style="background-color:lightcyan">
+                                    <main role="main" class="pb-1">
+                                        @RenderBody()
+                                    </main>
+                                </div>
+                            }
+                        </main>
+                    </div>
+                </div>
+
+
+                <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+                <script src="~/assets/js/popper.min.js"></script>
+                <script src="~/assets/js/bootstrap.min.js"></script>
+                <script src="~/assets/js/feather.min.js"></script>
+                <script src="~/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+                <script src="~/assets/plugins/apexchart/apexcharts.min.js"></script>
+                <script src="~/assets/plugins/apexchart/chart-data.js"></script>
+                <script src="~/assets/js/script.js"></script>
+                @await RenderSectionAsync("Scripts", required: false)
+
+            </div>
+        </body>
+    </html>
+}
+}
+
+
+
+
+

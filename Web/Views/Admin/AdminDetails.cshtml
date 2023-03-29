@@ -1,0 +1,70 @@
+﻿@model AdminViewModel
+<div class="card-body">
+    <form enctype="multipart/form-data">
+        <div class="mb-3 d-flex justify-content-start">
+            <input type="hidden" asp-for="Id" />
+            @if (Model.Gender == true && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="Alternate Text" />
+            }
+            @if (Model.Gender == false && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="Alternate Text" />
+            }
+            @if ((Model.Gender == true || Model.Gender == false) && Model.PhotoUrl != null)
+            {
+                <img style="width: 200px; height: 200px;" src="~/img/@Model.PhotoUrl" alt="Alternate Text" />
+            }
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 m-auto">
+                    <label asp-for="FirstName" style="font-weight:bold" class="form-label">Ad :</label>
+                    <label asp-for="FirstName" class="form-label"> @Model.FirstName</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="SecondName" style="font-weight:bold" class="form-label">İkinci Ad :</label>
+                    <label class="form-label"> @(Model.SecondName == "" ? "-" : Model.SecondName)</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="Surname" style="font-weight:bold" class="form-label">Soyad :</label>
+                    <label asp-for="Surname" class="form-label"> @Model.Surname</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="SecondSurname" style="font-weight:bold" class="form-label">İkinci Soyad :</label>
+                    <label class="form-label"> @(Model.SecondSurname == "" ? "-" : Model.SecondSurname)</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="Address" style="font-weight:bold" class="form-label">Adres :</label>
+                    <label asp-for="Address" class="form-label"> @Model.Address</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="GenderText" style="font-weight:bold" class="form-label">Cinsiyet :</label>
+                    <label asp-for="GenderText" class="form-label"> @Model.GenderText</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="MailAdress" style="font-weight:bold" class="form-label">Mail Adresi :</label>
+                    <label asp-for="MailAdress" class="form-label"> @Model.MailAdress</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="PhoneNumber" style="font-weight:bold" class="form-label">Telefon Numarası :</label>
+                    <label asp-for="PhoneNumber" class="form-label"> @Model.PhoneNumber</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="BirthDate" style="font-weight:bold" class="form-label">Doğum Tarihi :</label>
+                    <label asp-for="BirthDate" class="form-label"> @Model.BirthDate.Value.ToShortDateString()</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="BirthPlace" style="font-weight:bold" class="form-label">Doğum Yeri :</label>
+                    <label asp-for="BirthPlace" class="form-label"> @Model.BirthPlace</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="TC" style="font-weight:bold" class="form-label">T.C. No :</label>
+                    <label asp-for="TC" class="form-label"> @Model.TC</label>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-outline-dark mx-2" style="font-weight:bold" asp-action="AdminUpdate" asp-controller="Admin">GÜNCELLE</a>
+                    <a class="btn btn-outline-dark" style="font-weight:bold" asp-action="Index" asp-controller="Admin">ÖZET</a>
+                </div>
+            </div>
+        </div>
+    </form>    
+</div>

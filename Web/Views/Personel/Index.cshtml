@@ -1,0 +1,52 @@
+﻿@model PersonelSummaryViewModel
+<div class="card-body">
+    <form method="get" enctype="multipart/form-data">
+        <div class="mb-3 d-flex justify-content-start">
+            @if (Model.Gender == true && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/4c74230e-bd20-4c4c-9475-be606d498259.jpg" alt="Alternate Text" />
+            }
+            @if (Model.Gender == false && Model.PhotoUrl == null)
+            {
+                <img style="width: 150px; height: 150px; " src="~/img/c201202f-8c20-4ebe-b021-ee5fc0388e09.jpg" alt="Alternate Text" />
+            }
+            @if ((Model.Gender == true || Model.Gender == false) && Model.PhotoUrl != null)
+            {
+
+                <img style="width: 150px; height: 150px; " src="~/img/@Model.PhotoUrl" alt="Alternate Text" />
+            }
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 m-auto d-flex justify-content-center">
+                    <label asp-for="FirstName" style="font-weight:bold" class="form-label mr-2"> @Model.FirstName</label>
+                    <label asp-for="Surname" style="font-weight:bold" class="form-label"> @Model.Surname</label>
+                </div>
+                <hr />
+                <div class="mb-1 m-auto">
+                    <label asp-for="Address" style="font-weight:bold" class="form-label">Adres :</label>
+                    <label asp-for="Address" class="form-label"> @Model.Address</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="Job" style="font-weight:bold" class="form-label">Meslek :</label>
+                    <label asp-for="Job" class="form-label"> @Model.Job</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="MailAdress" style="font-weight:bold" class="form-label">Mail Adresi :</label>
+                    <label asp-for="MailAdress" class="form-label"> @Model.MailAdress</label>
+                </div>
+                <div class="mb-1 m-auto">
+                    <label asp-for="PhoneNumber" style="font-weight:bold" class="form-label">Telefon Numarası :</label>
+                    <label asp-for="PhoneNumber" class="form-label"> @Model.PhoneNumber</label>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Department!.Name" style="font-weight:bold" class="form-label">Departman :</label>
+                    <label asp-for="@Model.Department!.Name" class="form-label"> @Model.Department!.Name</label>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" asp-for="Id" />
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-dark mx-2" asp-action="PersonelUpdate" asp-controller="Personel">GÜNCELLE</a>
+            <a class="btn btn-outline-dark" asp-action="PersonelDetails" asp-controller="Personel">DETAY GÖSTER</a>
+        </div>
+    </form>
+</div>

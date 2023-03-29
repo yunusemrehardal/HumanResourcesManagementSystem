@@ -1,0 +1,136 @@
+﻿@model PermissionViewModel
+<div class="card-body">
+    <form method="post">
+        <input type="hidden" asp-for="@Model.PersonelId" />
+        <div>
+            <div>
+                <div class="mb-3">
+                    <label style="font-weight:bold" class="form-label">İzin Başlangıç Tarihi</label>
+                    <input style="width:500px" asp-for="StartOfPermissionDate" type="date" id="startDate" class="form-control" placeholder="İzin Başlangıç Tarihi">
+                    <span asp-validation-for="@Model.StartOfPermissionDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label style="font-weight:bold" class="form-label">İzin Bitiş Tarihi</label>
+                    <input style="width:500px" asp-for="EndOfPermissionDate" type="date" id="endDate" class="form-control" placeholder="İzin Bitiş Tarihi">
+                    <span asp-validation-for="@Model.EndOfPermissionDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label style="font-weight:bold" class="form-label">İzin Gün Sayısı</label>
+                    <input style="width:500px" asp-for="@Model.CountOfPermittedDays" id="CountOfPermittedDays" type="text" disabled class="form-control" placeholder="İzin Gün Sayısı">
+                    <span asp-validation-for="@Model.CountOfPermittedDays" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label style="font-weight:bold" class="form-label">İzin Türünü Seç :</label>
+                    <select asp-for="PermissionType" id="PermissionType" asp-items="@((IEnumerable<SelectListItem>)ViewData["PermissionList"])"></select>
+
+                </div>
+            </div>
+        </div>
+        @*<input asp-for="IsItConfirmed" type="checkbox" hidden class="form-control">
+            <input style="width:250px" asp-for="IsActive" type="checkbox" class="form-control" hidden>*@
+        <button style="font-weight:bold" type="submit" class="btn btn-outline-dark" asp-action="AddPermissionRequest" asp-controller="Personel">İZİN EKLE</button>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        function calculateDateDiff() {
+            var startDate = new Date(document.getElementById("startDate").value);
+            var endDate = new Date(document.getElementById("endDate").value);
+            var diffInTime = endDate.getTime() - startDate.getTime();
+            var diffInDays = diffInTime / (1000 * 3600 * 24);
+            document.getElementById("CountOfPermittedDays").value = diffInDays;
+        }
+        document.getElementById("startDate").addEventListener("change", calculateDateDiff);
+        document.getElementById("endDate").addEventListener("change", calculateDateDiff);
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#startDate').change(function () {
+                validateStartDate();
+                calculateEndDate();
+            });
+            $('#endDate').change(function () {
+                validateEndDate();
+            });
+            $('#PermissionType').change(function () {
+                calculateEndDate();
+            });
+
+            function calculateEndDate() {
+                var startDate = new Date($('#startDate').val());
+                var permissionType = parseInt($('#PermissionType').val());
+                var permittedDays = 0;
+
+                switch (permissionType) {
+                    case 0: // Yillikizin
+                        permittedDays = 14;
+                        break;
+                    case 1: // Dogumizni
+                        permittedDays = 56;
+                        break;
+                    case 2: // Babalikizni
+                        permittedDays = 3;
+                        break;
+                    case 3: // Evlilikizni
+                        permittedDays = 3;
+                        break;
+                    case 4: // Vefatizni
+                        permittedDays = 3;
+                        break;
+                    case 5: // Ucretsizizni
+                        permittedDays = 0;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (startDate && permittedDays) {
+                    var endDate = new Date(startDate);
+                    if (permissionType !== 5) {
+                        endDate.setDate(startDate.getDate() + permittedDays);
+                    }
+                    $('#endDate').val(endDate.toISOString().substr(0, 10));
+                    $('#CountOfPermittedDays').val(permittedDays);
+                } else {
+                    $('#endDate').val('');
+                    $('#CountOfPermittedDays').val('');
+                }
+
+                if (permissionType === 5) {
+                    $('#endDate').prop('readonly', false);
+                } else {
+                    $('#endDate').prop('readonly', true);
+                }
+            }
+
+            function validateEndDate() {
+                var endDate = new Date($('#endDate').val());
+                var today = new Date();
+                var maxDate = new Date(today.setDate(today.getDate() + 90));
+                if (endDate > maxDate) {
+                    alert('İzin tarihi 90 gün sonrasından daha ileri bir tarih olamaz.');
+                    $('#endDate').val('');
+                }
+            }
+
+            function validateStartDate() {
+                var startDate = new Date($('#startDate').val());
+                var today = new Date();
+                var maxStartDate = new Date(today.setDate(today.getDate() + 90));
+                if (startDate > maxStartDate) {
+                    alert('Başlangıç tarihi 90 gün sonrasından daha ileri bir tarih olamaz.');
+                    $('#startDate').val('');
+                }
+            }
+        });
+    </script>
+
+
+
+
+
+}
+

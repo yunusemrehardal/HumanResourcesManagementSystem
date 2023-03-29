@@ -1,0 +1,16 @@
+﻿@model AdvanceViewModel
+<div class="card-body">
+    <form asp-controller="Personel" asp-action="UploadAdvanceFile" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input asp-for="Id" type="text" class="form-control" hidden>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="AdvanceFile" class="form-label">Fatura Döküman</label>
+            <input asp-for="AdvanceFile" type="file" class="form-control">
+            <span asp-validation-for="AdvanceFile" class="text-danger"></span>
+        </div>
+        <button class="btn btn-outline-dark" style="font-weight:bold" type="submit" asp-action="UploadAdvanceFile" asp-controller="Personel">YÜKLE</button>
+        <a class="btn btn-outline-dark" style="font-weight:bold" asp-action="ListAdvanceRequests" asp-controller="Personel">GERİ</a>
+    </form>
+</div>
+

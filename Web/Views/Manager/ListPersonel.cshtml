@@ -1,0 +1,42 @@
+﻿@model List<ApplicationCore.Entities.Personel>
+@{
+    ViewData["Title"] = "Personel Ekranı";
+}
+<table class="table table-striped" style="font-size:20px">
+    <thead>
+        <tr style="padding:20px">
+            <th>
+                Personel Adı-Soyadı
+            </th>
+            <th>
+                Şirket Bilgisi
+            </th>
+            <th>
+                Departman Bilgisi
+            </th>
+            <th>
+                Müdür Bilgisi
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.FirstName +" " +item.Surname )</td>
+                    <td>@item.Department.Company.Name</td>
+                    <td>@item.Department.Name</td>
+                    <td>@item.Department.Manager.FirstName</td>
+                    <td class="text-end">
+                        <a class="btn btn-danger" asp-controller="Manager" asp-action="PersonelDetails" asp-route-id="@item.Id">Detay Göster</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,117 @@
+﻿@using Infrastructure.Data;
+@model List<PermissionViewModel>
+@inject ApplicationDbContext db
+@{
+    ViewData["Title"] = "İzin Görüntüleme";
+}
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">PDF Dosyası</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <embed id="pdfEmbed" src="" type="application/pdf" style="width:100%;height:80vh;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<form  method="post" asp-controller="Personel" asp-action="UploadPermissionFile" enctype="multipart/form-data">
+    <div style="overflow:auto">
+        <table class="table table-striped mx-0" style="font-size:20px">
+            <thead>
+                <tr>
+                    <th>
+                        Tip
+                    </th>
+                    <th>
+                        Başlama Tarihi
+                    </th>
+                    <th>
+                        Bitiş Tarihi
+                    </th>
+                    <th>
+                        Kaç Gün?
+                    </th>
+                    <th>
+                        İstek Tarihi
+                    </th>
+                    <th>
+                        Durumu
+                    </th>
+                    <th>
+                        Cevaplanma Tarihi
+                    </th>
+                    <th>
+                        Döküman
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (PermissionViewModel item in Model)
+                    {
+                        <tr>
+                            <td>@(item.PermissionType)</td>
+                            <td>@(item.StartOfPermissionDate!.Value.ToShortDateString())</td>
+                            <td>@(item.EndOfPermissionDate!.Value.ToShortDateString())</td>
+                            <td>@(item.CountOfPermittedDays.Value.Days) gün</td>
+                            <td>@(db.Permissions.FirstOrDefault(x => x.Id == item.Id)?.RequestDate.ToString("d"))</td>
+                            <td>@item.ApprovalStateText</td>
+                            @if (item.ReplyDate != null)
+                            {
+                                <td>@(db.Permissions.FirstOrDefault(x => x.Id == item.Id)?.ReplyDate.Value.ToShortDateString())</td>
+                            }
+                            else
+                            {
+                                <td>@item.ReplyDate</td>
+                            }
+                            @if (item.PermissionFileUrl != null)
+                            {
+                                <td>
+
+                                    <a href="~/downloads/@item.PermissionFileUrl" class="pdf-link">Görüntüle</a>
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                            @if (!item.ApprovalState)
+                            {
+                                <td>-</td>
+                            }
+                            else
+                            {
+                                <td> <a class="btn btn-danger" asp-controller="Personel" asp-action="UploadPermissionFile" asp-route-id="@item.Id">Döküman Yükle</a></td>
+                            }
+                            <td class="text-end">
+                                <a class="btn btn-danger @if(item.ApprovalState) {<text>disabled</text>}" asp-controller="Personel" asp-action="DeletePermission" asp-route-id="@item.Id">İsteği Sil</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts{
+
+    <script>
+        $(document).on('click', '.pdf-link', function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).attr('href');
+            $('#pdfEmbed').attr('src', pdfUrl);
+            $('#pdfModal').modal('show');
+        });
+    </script>
+
+}
+

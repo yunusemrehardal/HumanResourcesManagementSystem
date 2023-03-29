@@ -1,0 +1,110 @@
+﻿@using Infrastructure.Data;
+@model List<AdvanceViewModel>
+@inject ApplicationDbContext db
+@{
+    ViewData["Title"] = "Avans Görüntüleme";
+}
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">PDF Dosyası</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <embed id="pdfEmbed" src="" type="application/pdf" style="width:100%;height:80vh;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-controller="Personel" asp-action="UploadAdvanceFile" enctype="multipart/form-data">
+    <table class="table table-striped" style="font-size:16px">
+        <thead>
+            <tr>
+                <th>
+                     Tutar
+                </th>
+                <th>
+                     İstek Tarihi
+                </th>
+                <th>
+                     Durumu
+                </th>
+                <th>
+                     Cevaplanma Tarihi
+                </th>
+                <th>
+                    Döküman
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (AdvanceViewModel item in Model)
+                {
+                    <tr>
+                        <td>@(item.AdvancePaymentRequest) @(item.Currency)</td>
+                        <td>@(db.Advances.FirstOrDefault(x => x.Id == item.Id)?.AdvanceRequestDate.ToShortDateString())</td>
+                        <td>@item.IsItConfirmedText</td>
+                        @if (item.AdvanceApprovalDate != null)
+                        {
+                            <td>@(db.Advances.FirstOrDefault(x => x.Id == item.Id)?.AdvanceApprovalDate.Value.ToShortDateString())</td>
+                        }
+                        else
+                        {
+                            <td>@item.AdvanceApprovalDate</td>
+                        }
+                        @if (item.AdvanceFileUrl != null)
+                        {
+                            <td>
+                                @*<a href="~/downloads/@item.AdvanceFileUrl" download>Yüklediğin Dökümanı İndir</a>*@
+                                <a href="~/downloads/@item.AdvanceFileUrl" class="pdf-link">Yüklediğin Dökümanı Görüntüle</a>
+
+                            </td>
+                        }
+                        else
+                        {
+                            <td>-</td>
+                        }
+                        @if (!item.AdvanceType || item.IsItConfirmedText == "Reddedildi!!" || item.IsItConfirmedText == "Onay Bekliyor")
+                        {
+                            <td>-</td>
+                        }
+                        else
+                        {
+                            <td> <a class="btn btn-danger" asp-controller="Personel" asp-action="UploadAdvanceFile" asp-route-id="@item.Id">Döküman Yükle</a></td>
+                        }
+                        <td class="text-end">
+                            <a class="btn btn-danger @if(item.IsItConfirmed || item.IsActive) { <text>disabled</text> }" asp-controller="Personel" asp-action="DeleteAdvance" asp-route-id="@item.Id">İsteği Sil</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+@section Scripts{
+
+    <script>
+        $(document).on('click', '.pdf-link', function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).attr('href');
+            $('#pdfEmbed').attr('src', pdfUrl);
+            $('#pdfModal').modal('show');
+        });
+    </script>
+
+}
+

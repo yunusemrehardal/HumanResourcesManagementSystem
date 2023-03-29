@@ -1,0 +1,168 @@
+﻿@using Infrastructure.Data;
+@using Newtonsoft.Json;
+@model List<AdvanceViewModel>
+
+@{
+    ViewData["Title"] = "Avans Görüntüleme";
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger mt-2 mb-2" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+@if (Model != null)
+{
+    <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">PDF Dosyası</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfEmbed" src="" type="application/pdf" style="width:100%;height:80vh;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" asp-controller="Manager" asp-action="ShowAllAdvanceRequests" enctype="multipart/form-data">
+        <table class="table table-striped" style="font-size:15px">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Ad-Soyad
+                    </th>
+                    <th>
+                        Tutar
+                    </th>
+                    <th>
+                        Tip
+                    </th>
+                    <th>
+                        İstek Tarihi
+                    </th>
+                    <th>
+                        Görüldü
+                    </th>
+
+                    <th>
+                        Kabul/Red Etme
+                    </th>
+                    <th>
+                        Fatura Döküman
+                    </th>
+                    <th>
+                        Personele Bildir
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (AdvanceViewModel item in Model)
+                    {
+                        <tr>
+                            <td><input type="hidden" asp-for="@item.PersonelId" /></td>
+                            <td>@(item.Personel.FirstName + " " + item.Personel.Surname)</td>
+                            <td>@(item.AdvancePaymentRequest) @(item.Currency)</td>
+                            <td>@item.AdvanceTypeText</td>
+                            <td>@(item.AdvanceRequestDate.ToShortDateString())</td>
+                            <td>
+                                <input type="checkbox" class="form-control" name="isActive_@item.Id" value="true" @(item.IsActive ? "checked" : "") @(item.IsActive ? "style=pointer-events:none" : "") />
+                            </td>
+
+                            <td>
+                                <input type="checkbox" class="form-control w-50" name="isItConfirmed_@item.Id" value="true" @(item.IsItConfirmed ? "checked" : "") @(item.IsItConfirmed ? "style=pointer-events:none" : "") />
+                            </td>
+                            @if (item.AdvanceFileUrl != null)
+                            {
+                                <td>
+                                    @*<a href="~/downloads/@item.AdvanceFileUrl" download>PDF Dosyasını İndir</a>*@
+                                    <a href="~/downloads/@item.AdvanceFileUrl" class="pdf-link">PDF Dosyasını Görüntüle</a>
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                            @if (!item.IsItConfirmed)
+                            {
+                                <td class="text-end">
+                                    <button class="btn btn-danger" type="submit" name="id" value="@item.Id">Onayla</button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-end">
+                                    <label value="@item.Id">Onaylandı</label>
+                                </td>
+                            }
+
+                            <td>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+        <div id="pdfLink"></div>
+    </form>
+}
+
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // Tüm satırlarda dolaş
+            $('input[name^="isActive_"]').each(function () {
+                var id = $(this).attr('name').split('_')[1]; // Satırın id'sini al
+                var isConfirmed = $('input[name="isItConfirmed_' + id + '"]'); // isItConfirmed öğesini bul
+                if (!$(this).is(':checked')) { // isActive işaretli değilse
+                    isConfirmed.prop('checked', false); // isItConfirmed'i de işaretsiz yap
+                    isConfirmed.prop('disabled', true); // isItConfirmed'i etkisiz hale getir
+                }
+                $(this).change(function () { // isActive değiştiğinde
+                    isConfirmed.prop('disabled', !$(this).is(':checked')); // isItConfirmed'i etkinleştir veya devre dışı bırak
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.pdf-link', function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).attr('href');
+            $('#pdfEmbed').attr('src', pdfUrl);
+            $('#pdfModal').modal('show');
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

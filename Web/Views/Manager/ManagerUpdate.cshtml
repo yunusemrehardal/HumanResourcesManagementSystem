@@ -1,0 +1,35 @@
+﻿@model ManagerViewModel
+<div class="card-body">
+    <form asp-controller="Manager" asp-action="ManagerUpdate" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input asp-for="Id" type="text" class="form-control" hidden>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="Photo" class="form-label">Fotoğraf</label>
+            <input asp-for="Photo" type="file" class="form-control">
+            <span asp-validation-for="Photo" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label hidden style="font-weight:bold" asp-for="FirstName" class="form-label"></label>
+            <input hidden asp-for="FirstName" type="text" class="form-control">
+            <span hidden asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label hidden style="font-weight:bold" asp-for="Surname" class="form-label"></label>
+            <input hidden asp-for="Surname" type="text" class="form-control">
+            <span hidden asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="Address" class="form-label">Adres</label>
+            <input asp-for="Address" type="text" class="form-control" placeholder="Adres">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="PhoneNumber" class="form-label">Telefon Numarası</label>
+            <input asp-for="PhoneNumber" type="number" class="form-control" placeholder="Telefon Numarası">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <button style="font-weight:bold" class="btn btn-outline-dark" type="submit" asp-action="ManagerUpdate" asp-controller="Manager">GÜNCELLE</button>
+        <a class="btn btn-outline-dark" style="font-weight:bold" asp-action="Index" asp-controller="Manager">Özet Ekranına Geçiş</a>
+    </form>
+</div>

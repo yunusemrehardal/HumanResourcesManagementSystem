@@ -1,0 +1,178 @@
+﻿@model CompanyViewModel
+
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Name" class="form-label">İsim :</label>
+                <input style="width:250px" size="30" asp-for="Name" type="text" class="form-control" placeholder="Ad">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="Logo" class="form-label">Logo :</label>
+                    <input style="width:250px" asp-for="Logo" type="file" class="form-control" placeholder="Logo">
+                    <span asp-validation-for="@Model.Logo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="Address" class="form-label">Adres: </label>
+                <input style="width:250px" size="30" asp-for="Address" type="text" class="form-control" placeholder="Adres">
+                <span asp-validation-for="@Model.Address" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="PhoneNumber" class="form-label">Telefon Numarası:</label>
+                    <input style="width:250px" asp-for="PhoneNumber" type="number" class="form-control" placeholder="05XXXXXXXXX" data-val="true" data-val-turkeyphone="Geçerli bir Türk telefon numarası girin.">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="MailAdress" class="form-label">E-Posta : </label>
+                <input style="width:250px" size="30" asp-for="MailAdress" type="email" class="form-control" placeholder="eposta">
+                <span asp-validation-for="@Model.MailAdress" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="Title" class="form-label">Ünvan : </label>
+                    <input style="width:250px" asp-for="Title" type="text" class="form-control" placeholder="unvan">
+                    <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="TaxDepartment" class="form-label">Vergi Dairesi :</label>
+                <input style="width:250px" size="30" asp-for="TaxDepartment" type="text" class="form-control" placeholder="vergi dairesi">
+                <span asp-validation-for="@Model.TaxDepartment" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="FoundationYear" class="form-label">Kuruluş Tarihi :</label>
+                    <input style="width:250px" asp-for="FoundationYear" type="date" class="form-control" placeholder="Kuruluş tarihi">
+                    <span asp-validation-for="@Model.FoundationYear" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="MersisNo" class="form-label">MERSIS No :</label>
+                <input style="width:250px" size="30" asp-for="MersisNo" type="number" class="form-control" placeholder="Mersis no">
+                <span asp-validation-for="@Model.MersisNo" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end" style="margin-left:50px;">
+                <div class="mb-1 mx-5">
+                    <label style="font-weight:bold" asp-for="TaxNo" class="form-label">Vergi No :</label>
+                    <input style="width:250px" asp-for="TaxNo" type="number" class="form-control" placeholder="vergi no">
+                    <span asp-validation-for="@Model.TaxNo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="ContractStartYear" class="form-label">Kontrat Başlama Tarihi :</label>
+                <input style="width:250px" asp-for="ContractStartYear" type="date" id="ContractStartYear" class="form-control">
+                <span asp-validation-for="@Model.ContractStartYear" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end">
+                <div class="mb-1 mx-4">
+                    <label style="font-weight:bold" asp-for="ContractEndYear" class="form-label">Kontrat Bitiş Tarihi :</label>
+                    <input style="width:250px" asp-for="ContractEndYear" type="date" id="ContractEndYear" class="form-control">
+                    <span asp-validation-for="@Model.ContractEndYear" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label style="font-weight:bold" asp-for="StartDateOfPackage" class="form-label">Paketin Başlama Tarihi:</label>
+                <input style="width:250px" asp-for="StartDateOfPackage" type="date" id="StartDateOfPackage" class="form-control">
+                <span asp-validation-for="StartDateOfPackage" class="text-danger"></span>
+            </div>
+            <div class="justify-content-end">
+                <div class="mb-1 mx-4">
+                    <label style="font-weight:bold" asp-for="EndDateOfPackage" class="form-label">Paketin Bitiş Tarihi :</label>
+                    <input style="width:250px" asp-for="EndDateOfPackage" type="date" id="EndDateOfPackage" class="form-control">
+                    <span asp-validation-for="EndDateOfPackage" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-1 d-flex justify-content-start">
+            <div class="mb-1 mx-5">
+                <label asp-for="Package" style="font-weight:bold" class="form-label">Paket Seç :</label>
+                <select style="font-weight:bold" asp-for="PackageId" asp-items="@ViewBag.PackageList" class="form-select me-3 w-auto">
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-sm-0">
+            <input asp-for="IsActive" type="hidden" id="IsActive" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-outline-dark" style="font-weight:bold" asp-action="AddCompany" asp-controller="Admin">EKLE</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // HTML'deki ContractEndYear elementi
+        const contractEndYear = document.getElementById("ContractEndYear");
+
+        // EndDateOfWork değişkeni bir değer aldığında
+        contractEndYear.addEventListener("change", function () {
+            // IsActive değeri false olarak ayarlanacak
+            document.getElementById("IsActive").value = false;
+        });
+
+        // EndDateOfWork değişkeni bir değer almazsa
+        if (!contractEndYear.value) {
+            // IsActive değeri true olarak ayarlanacak
+            document.getElementById("IsActive").value = true;
+        }
+    </script>
+    <script>
+        // Input elements
+        var contractStartYear = document.getElementById("ContractStartYear");
+        var startDateOfPackage = document.getElementById("StartDateOfPackage");
+        var endDateOfPackage = document.getElementById("EndDateOfPackage");
+
+        // Event listener for when the StartDateOfPackage input is changed
+        startDateOfPackage.addEventListener('change', function () {
+            // Convert input values to Date objects
+            var startDate = new Date(startDateOfPackage.value);
+            var contractStartDate = new Date(contractStartYear.value);
+
+            // Check if StartDateOfPackage is before ContractStartYear
+            if (startDate < contractStartDate) {
+                alert("Paketin başlama tarihi kontrat başlama tarihinden önce olamaz!");
+                startDateOfPackage.value = "";
+                return;
+            }
+
+            // Event listener for when the EndDateOfPackage input is changed
+            endDateOfPackage.addEventListener('change', function () {
+                // Convert input values to Date objects
+                var endDate = new Date(endDateOfPackage.value);
+                var startDate = new Date(startDateOfPackage.value);
+
+                // Check if EndDateOfPackage is before StartDateOfPackage
+                if (endDate < startDate) {
+                    alert("Paketin bitiş tarihi paketin başlama tarihinden önce olamaz!");
+                    endDateOfPackage.value = "";
+                }
+            });
+        });
+    </script>
+
+
+}
+

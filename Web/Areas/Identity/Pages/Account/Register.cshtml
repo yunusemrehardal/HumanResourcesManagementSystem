@@ -1,0 +1,52 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Üye Ol";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- EMail input -->
+                    <div class="form-outline mb-4">
+                        <label asp-for="Input.Email" class="form-label">E-Posta Adresi:</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="e-posta" aria-required="true"
+                               placeholder="Geçerli bir e-posta adresi giriniz" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label asp-for="Input.Password" class="form-label">Şifre:</label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true"
+                               placeholder="Şifrenizi Giriniz" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label asp-for="Input.ConfirmPassword" class="form-label">Şifre:</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true"
+                               placeholder="Şifrenizi Tekrar Giriniz" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Üye Ol</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

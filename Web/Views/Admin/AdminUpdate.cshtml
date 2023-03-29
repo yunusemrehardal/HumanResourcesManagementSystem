@@ -1,0 +1,25 @@
+﻿@model AdminViewModel
+<div class="card-body">
+    <form asp-controller="Admin" asp-action="AdminUpdate" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input asp-for="Id" type="hidden" class="form-control" >
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="Photo" class="form-label">Fotoğraf</label>
+            <input asp-for="Photo" type="file" class="form-control">
+            <span asp-validation-for="Photo" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="Address" class="form-label">Adres</label>
+            <input asp-for="Address" type="text" class="form-control" placeholder="Adres">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label style="font-weight:bold" asp-for="PhoneNumber" class="form-label">Telefon Numarası</label>
+            <input asp-for="PhoneNumber" type="number" class="form-control" placeholder="Telefon Numarası">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <button class="btn btn-outline-dark" style="font-weight:bold" type="submit" asp-action="AdminUpdate" asp-controller="Admin">GÜNCELLE</button>
+        <a class="btn btn-outline-dark" style="font-weight:bold" asp-action="Index" asp-controller="Admin">ÖZET</a>
+    </form>
+</div>

@@ -1,0 +1,91 @@
+﻿@model List<ApplicationCore.Entities.Package>
+@inject Infrastructure.Data.ApplicationDbContext db
+@{
+    ViewData["Title"] = "Şirket Listesi";
+}
+
+<div class="modal fade" id="company-modal" tabindex="-1" role="dialog" aria-labelledby="company-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="company-modal-label">Şirketler</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="company-list">
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped" style="font-size:20px">
+    <thead>
+        <tr style="padding:5px">
+            <th>
+                Paket Adı
+            </th>
+            <th>
+                Ücret
+            </th>
+            <th>
+                Ödeme Birimi
+            </th>
+            <th>
+                Kullanıcı Sayısı
+            </th>
+            <th>
+                Yayınlanma Tarihi
+            </th>
+            <th>
+                Yayından Kalkış
+            </th>
+            <th>
+                Pakete Sahip Şirketler
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                var companyCount = db.Companies.Where(x => x.PackageId == item.Id).Count();
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Currency</td>
+                    <td>@companyCount</td>
+                    <td>@(item.StartDateOfRelease?.ToString("d") ?? "")</td>
+                    <td>@(item.EndDateOfRelease?.ToString("d") ?? "")</td>
+                    <td class="text-end">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center" style="width:150px;height:40px;font-weight:bold" onclick="showCompanies('@item.Id')">Şirketleri Göster</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        function showCompanies(packageId) {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/GetCompaniesByPackageId/' + packageId,
+                success: function (data) {
+                    var html = '<table class="table table-striped"><thead><tr><th>Şirket Adı</th></tr></thead><tbody>';
+                    $.each(data, function (i, item) {
+                        html += '<tr><td>' + item + '</td></tr>';
+                    });
+                    html += '</tbody></table>';
+                    $('#company-modal-label').text('Pakete Sahip Şirketler');
+                    $('#company-list').html(html);
+                    $('#company-modal').modal('show');
+                }
+            });
+        }
+    </script>
+}
+
+

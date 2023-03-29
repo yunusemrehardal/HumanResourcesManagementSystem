@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{55B470EB-39BD-43C4-87ED-48F14AB15698}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2102A914-BF57-4DB6-9381-F70D45BAF82A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{2F531499-145D-4090-9645-B43C595D859A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EE9FD934-1B7B-48D6-8B34-0C8974CB4BB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55B470EB-39BD-43C4-87ED-48F14AB15698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55B470EB-39BD-43C4-87ED-48F14AB15698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55B470EB-39BD-43C4-87ED-48F14AB15698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55B470EB-39BD-43C4-87ED-48F14AB15698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2102A914-BF57-4DB6-9381-F70D45BAF82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2102A914-BF57-4DB6-9381-F70D45BAF82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2102A914-BF57-4DB6-9381-F70D45BAF82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2102A914-BF57-4DB6-9381-F70D45BAF82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F531499-145D-4090-9645-B43C595D859A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F531499-145D-4090-9645-B43C595D859A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F531499-145D-4090-9645-B43C595D859A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F531499-145D-4090-9645-B43C595D859A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55B470EB-39BD-43C4-87ED-48F14AB15698} = {EE9FD934-1B7B-48D6-8B34-0C8974CB4BB3}
+		{2102A914-BF57-4DB6-9381-F70D45BAF82A} = {EE9FD934-1B7B-48D6-8B34-0C8974CB4BB3}
+		{2F531499-145D-4090-9645-B43C595D859A} = {EE9FD934-1B7B-48D6-8B34-0C8974CB4BB3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0EA49017-DBE0-487C-8522-AEB558537468}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/albekyilmaz
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ApplicationCore\\ApplicationCore.csproj
+		SccProjectTopLevelParentUniqueName1 = HRProject.sln
+		SccProjectName1 = ApplicationCore
+		SccLocalPath1 = ApplicationCore
+		SccProjectUniqueName2 = Infrastructure\\Infrastructure.csproj
+		SccProjectTopLevelParentUniqueName2 = HRProject.sln
+		SccProjectName2 = Infrastructure
+		SccLocalPath2 = Infrastructure
+		SccProjectUniqueName3 = Web\\Web.csproj
+		SccProjectTopLevelParentUniqueName3 = HRProject.sln
+		SccProjectName3 = Web
+		SccLocalPath3 = Web
+	EndGlobalSection
+EndGlobal
